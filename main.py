@@ -9,7 +9,7 @@ now = datetime.now()
 datetime_string = now.strftime("%Y%m%d-%H%M%S")
 env = "test"
 
-logging.basicConfig(filename='crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='./logs/crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
 logging.info('Starting web crawler')
 
 relative_url = "/web/20200207180731/https://en.wikipedia.org/wiki/Web_scraping"
