@@ -1,27 +1,44 @@
-# This is a sample Python script.
 import requests
 from bs4 import BeautifulSoup
+import logging
+from datetime import datetime
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# TODO - add a config file for log level, log format etc.
+# datetime object containing current date and time
+now = datetime.now()
+datetime_string = now.strftime("%Y%m%d-%H%M%S")
+env = "test"
+
+logging.basicConfig(filename='crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
+logging.info('Starting web crawler')
 
 relative_url = "/web/20200207180731/https://en.wikipedia.org/wiki/Web_scraping"
-base_url = "https://web.archive.org"
+base_url = "https://web.archive.orgzzz"
 absolute_url = base_url + relative_url
 
 def scrape_url(url):
-    req = requests.get(url)
-    if req.status_code == "404":
-        return "An error occurred fetching content"
+    # TODO add more logging
+    logging.debug('Fetching data from: {}'.format(url))
+    try:
+        req = requests.get(url)
+        if req.status_code == "404":
+            logging.error('Site not found error.')
+            return ''
+    except requests.exceptions.ConnectionError:
+        logging.error('Connection error.')
+        return ''
+
     return req.text
 
 def parse_html(html):
     link_dict = {}
 
     soup = BeautifulSoup(html, 'html.parser')
-    link_div = soup.find('div', {'class': 'div-col columns column-width'})
+    target_element = 'div'
+    target_class = 'div-col columns column-width'
+    link_div = soup.find(target_element, {'class': target_class})
     if link_div is None:
-        print("Target element not found")
+        logging.error("Target element '{}' with class '{}' not found".format(target_element, target_class))
         return link_dict
 
     # Passing a list to find_all method
@@ -37,4 +54,3 @@ if __name__ == '__main__':
     for key, value in links_dictionary.items():
         if "scraping" in key:
             print(value)
-    #print(links_dictionary)
