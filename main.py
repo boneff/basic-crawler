@@ -13,7 +13,7 @@ logging.basicConfig(filename='crawler-{}-{}.log'.format(datetime_string, env), e
 logging.info('Starting web crawler')
 
 relative_url = "/web/20200207180731/https://en.wikipedia.org/wiki/Web_scraping"
-base_url = "https://web.archive.orgzzz"
+base_url = "https://web.archive.org"
 absolute_url = base_url + relative_url
 
 def scrape_url(url):
