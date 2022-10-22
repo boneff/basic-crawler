@@ -8,6 +8,7 @@ requests = "*"
 bs4 = "*"
 lxml = "*"
 python-dotenv = "*"
+tld = "*"
 
 [dev-packages]
 coverage = "*"
