@@ -1,26 +1,29 @@
-import requests
 from bs4 import BeautifulSoup
-import logging
 from datetime import datetime
-
-# TODO - add a config file for log level, log format etc.
-# datetime object containing current date and time
-now = datetime.now()
-datetime_string = now.strftime("%Y%m%d-%H%M%S")
-env = "test"
-
-logging.basicConfig(filename='./logs/crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
-logging.info('Starting web crawler')
+from dotenv import load_dotenv
+import logging
+import os
+import requests
 
 relative_url = "/web/20200207180731/https://en.wikipedia.org/wiki/Web_scraping"
 base_url = "https://web.archive.org"
-absolute_url = base_url + relative_url
 
-def scrape_url(url):
-    # TODO add more logging
-    logging.debug('Fetching data from: {}'.format(url))
+def setup():
+    load_dotenv()
+    # datetime object containing current date and time
+    now = datetime.now()
+    datetime_string = now.strftime("%Y%m%d-%H%M%S")
+    env = os.getenv('ENVIRONMENT')
+
+    logging.basicConfig(filename='./logs/crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
+
+def scrape_url(base_url, relative_url):
+    absolute_url = base_url + relative_url
+
+    logging.info('Starting web crawler')
+    logging.debug('Fetching data from: {}'.format(absolute_url))
     try:
-        req = requests.get(url)
+        req = requests.get(absolute_url)
         if req.status_code == "404":
             logging.error('Site not found error.')
             return ''
@@ -48,7 +51,8 @@ def parse_html(html):
     return link_dict
 
 if __name__ == '__main__':
-    req_text = scrape_url(absolute_url)
+    setup()
+    req_text = scrape_url(base_url, relative_url)
     links_dictionary = parse_html(req_text)
     print(links_dictionary)
     for key, value in links_dictionary.items():
