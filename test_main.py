@@ -8,6 +8,9 @@ class Test(TestCase):
     def setUp(self):
         self.test_html = Path('./fixtures/test.txt').read_text()
         self.expected_json = json.loads(Path('fixtures/test_expectation.json').read_text(), strict=False)
+        # self.test_parse_links = Path('./fixtures/test_links.txt').read_text()
+        # self.expected_parsed_links = Path('./fixtures/test_links_expectation.json').read_text()
+
 
     def test_parse_html_no_result(self):
         assert main.parse_html("") == {}

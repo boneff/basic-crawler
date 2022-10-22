@@ -42,7 +42,11 @@ def parse_html(html, target_element, target_class = ''):
 
     # Passing a list to find_all method
     for element in link_div.find_all('a'):
-        link_dict[element.get_text()] = element['href']
+        try:
+            link_dict[element.get_text()] = element['href']
+        except KeyError:
+            logging.error("Error getting 'href' from element".format(element))
+            continue
 
     return link_dict
 
@@ -61,7 +65,7 @@ def get_normalized_url(url):
 
 def complete_crawler(seed_url, max_n = 1):
     delay_time = 0.5
-    target_element = 'div'
+    target_element = 'body'
     target_class = ''
     initial_url_set = set()
     initial_url_list = []
