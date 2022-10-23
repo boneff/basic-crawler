@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 from dotenv import load_dotenv
+import json
 import logging
 import os
 import requests
@@ -26,18 +27,19 @@ def scrape_url(absolute_url):
     except requests.exceptions.ConnectionError:
         logging.error('Connection error.')
         return ''
-    logging.debug('Fetched data {} from: {}'.format(req.text, absolute_url))
 
     return req.text
 
 def parse_html(html, target_element, target_class = ''):
     link_dict = {}
-
+    target_attributes = None
     soup = BeautifulSoup(html, 'html.parser')
+    if target_class != '':
+        target_attributes = {'class': target_class}
 
-    link_div = soup.find(target_element, {'class': target_class})
+    link_div = soup.find(target_element, target_attributes)
     if link_div is None:
-        logging.error("Target element '{}' with class '{}' not found".format(target_element, target_class))
+        logging.error("Target element '{}' with target attributes '{}' not found".format(target_element, json.dumps(target_attributes)))
         return link_dict
 
     # Passing a list to find_all method
