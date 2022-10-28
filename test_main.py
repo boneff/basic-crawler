@@ -8,13 +8,12 @@ class Test(TestCase):
     def setUp(self):
         self.test_html = Path('./fixtures/test.txt').read_text()
         self.expected_json = json.loads(Path('fixtures/test_expectation.json').read_text(), strict=False)
-        # self.test_parse_links = Path('./fixtures/test_links.txt').read_text()
-        # self.expected_parsed_links = Path('./fixtures/test_links_expectation.json').read_text()
-
+        # self.test_html1 = Path('fixtures/test_1.html').read_text()
+        # self.expected_json1 = json.loads(Path('fixtures/test_1_expectation.json').read_text(), strict=False)
 
     def test_parse_html_no_result(self):
-        assert main.parse_html("") == {}
+        assert main.parse_html("<html><body><div></div></body></html>", "div") == {}
 
     def test_parse_html_success(self):
-        parsed_html = main.parse_html(self.test_html)
-        assert parsed_html.items() == self.expected_json.items()
+        parsed_data = main.parse_html(self.test_html, "div", "div-col columns column-width")
+        assert parsed_data.items() == self.expected_json.items()

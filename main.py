@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from bs4.dammit import EntitySubstitution
 from datetime import datetime
 from dotenv import load_dotenv
 import json
@@ -30,10 +31,10 @@ def scrape_url(absolute_url):
 
     return req.text
 
-def parse_html(html, target_element, target_class = ''):
+def parse_html(html_string, target_element, target_class = ''):
     link_dict = {}
     target_attributes = None
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html_string, 'html.parser')
     if target_class != '':
         target_attributes = {'class': target_class}
 
@@ -45,9 +46,12 @@ def parse_html(html, target_element, target_class = ''):
     # Passing a list to find_all method
     for element in link_div.find_all('a'):
         try:
-            link_dict[element.get_text()] = element['href']
+            # TODO - consider a custom formatter for BS4 instead of this simple strip
+            # https://tedboy.github.io/bs4_doc/8_output.html
+            element_text = element.get_text("&nbsp;", strip=True)
+            link_dict[element_text] = element['href']
         except KeyError:
-            logging.error("Error getting 'href' from element".format(element))
+            logging.error("Error getting 'href' from element {}".format(element))
             continue
 
     return link_dict
@@ -65,6 +69,10 @@ def get_normalized_url(url):
         final_url = url
     return final_url
 
+# TODO - parse robots.txt. Hint - use urllib.robotparser "from urllib import robotparser"
+# TODO - add crawl delay. if not specified in robots.txt - set a default value. Hint: add a simple sleep.
+# TODO - normalize urls to avoid duplication
+# TODO - count occurences of a given link - helpful in determining link importance
 def complete_crawler(seed_url, max_n = 1):
     delay_time = 0.5
     target_element = 'body'
@@ -92,12 +100,6 @@ def complete_crawler(seed_url, max_n = 1):
 
 if __name__ == '__main__':
     setup()
-    # req_text = scrape_url(base_url, relative_url)
-    # links_dictionary = parse_html(req_text)
-    # print(links_dictionary)
-    # for key, value in links_dictionary.items():
-    #     if "scraping" in key:
-    #         print(value)
 
     scraped_links = complete_crawler("http://www.dnes.bg/", 1)
     print(scraped_links)
