@@ -9,3 +9,7 @@ RUN pip install pipenv
 
 # install from Pipfile
 RUN pipenv install
+RUN mkdir logs
+
+CMD ["pipenv", "run", "python", "main.py"]
+

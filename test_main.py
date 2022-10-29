@@ -17,3 +17,9 @@ class Test(TestCase):
     def test_parse_html_success(self):
         parsed_data = main.parse_html(self.test_html, "div", "div-col columns column-width")
         assert parsed_data.items() == self.expected_json.items()
+
+    def test_parse_robots(self):
+        default_delay = 0.2
+        can_crawl, delay = main.parse_robots("https://www.dnes.bg/", default_delay)
+        assert can_crawl
+        assert delay == default_delay

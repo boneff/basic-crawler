@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup
-from bs4.dammit import EntitySubstitution
 from datetime import datetime
 from dotenv import load_dotenv
 import json
 import logging
 import os
 import requests
-from tld import get_tld, get_fld
+import time
+from tld import get_tld
+import urllib.robotparser
 
 def setup():
     load_dotenv()
@@ -17,9 +18,10 @@ def setup():
 
     logging.basicConfig(filename='./logs/crawler-{}-{}.log'.format(datetime_string, env), encoding='utf-8', level=logging.DEBUG)
 
-def scrape_url(absolute_url):
+def scrape_url(absolute_url, delay_time = 0.1):
     logging.info('Starting web crawler')
-    logging.debug('Fetching data from: {}'.format(absolute_url))
+    logging.debug('Fetching data from: {} with delay {} seconds'.format(absolute_url, delay_time))
+    time.sleep(delay_time)
     try:
         req = requests.get(absolute_url)
         if req.status_code == "404":
@@ -56,6 +58,17 @@ def parse_html(html_string, target_element, target_class = ''):
 
     return link_dict
 
+def parse_robots(url, default_delay = 0.5):
+    rp = urllib.robotparser.RobotFileParser()
+    rp.set_url("{}robots.txt".format(url))
+    rp.read()
+    delay = rp.crawl_delay("*")
+    can_fetch = rp.can_fetch("*", url)
+    if delay is None:
+        delay = default_delay
+
+    return can_fetch, delay
+
 
 def get_normalized_url(url):
     res = get_tld(url, as_object=True)
@@ -69,20 +82,15 @@ def get_normalized_url(url):
         final_url = url
     return final_url
 
-# TODO - parse robots.txt. Hint - use urllib.robotparser "from urllib import robotparser"
-# TODO - add crawl delay. if not specified in robots.txt - set a default value. Hint: add a simple sleep.
 # TODO - normalize urls to avoid duplication
 # TODO - count occurences of a given link - helpful in determining link importance
 def complete_crawler(seed_url, max_n = 1):
-    delay_time = 0.5
+    delay_time = 1
     target_element = 'body'
     target_class = ''
     initial_url_set = set()
     initial_url_list = []
     seen_url_set = set()
-    base_url = 'http://www.' + get_fld(seed_url)
-    res = get_tld(seed_url, as_object=True)
-    domain_name = res.fld
     initial_url_set.add(seed_url)
     initial_url_list.append(seed_url)
     link_dictionaries = []
@@ -92,7 +100,11 @@ def complete_crawler(seed_url, max_n = 1):
             continue
         else:
             seen_url_set.add(temp_url)
-            req_text = scrape_url(temp_url)
+            can_crawl, delay = parse_robots(temp_url, delay_time)
+            if not can_crawl:
+                logging.error("URL {} should not be crawled, skipping".format(temp_url))
+                continue
+            req_text = scrape_url(temp_url, delay)
             links_dictionary = parse_html(req_text, target_element, target_class)
             link_dictionaries.append(links_dictionary)
             # print(links_dictionary)
