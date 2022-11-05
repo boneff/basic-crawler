@@ -9,6 +9,7 @@ bs4 = "*"
 lxml = "*"
 python-dotenv = "*"
 tld = "*"
+pymongo = "*"
 
 [dev-packages]
 coverage = "*"

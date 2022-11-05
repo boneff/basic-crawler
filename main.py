@@ -8,6 +8,7 @@ import requests
 import time
 from tld import get_tld
 import urllib.robotparser
+import mongodb
 
 def setup():
     load_dotenv()
@@ -112,6 +113,9 @@ def complete_crawler(seed_url, max_n = 1):
 
 if __name__ == '__main__':
     setup()
-
+    mongo_client = mongodb.init_client("mongodb://{}:{}@localhost:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS')))
     scraped_links = complete_crawler("http://www.dnes.bg/", 1)
+
+    sites = mongo_client.get_collection("scraping", "sites_collection")
+    sites.insert_many(scraped_links)
     print(scraped_links)
