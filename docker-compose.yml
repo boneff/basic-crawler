@@ -33,6 +33,8 @@ services:
       - app-tier
     command:
       tail -f /dev/null
+    volumes:
+      - ./:/app
 
 networks:
   app-tier:
