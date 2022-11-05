@@ -113,9 +113,12 @@ def complete_crawler(seed_url, max_n = 1):
 
 if __name__ == '__main__':
     setup()
-    mongo_client = mongodb.init_client("mongodb://{}:{}@localhost:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS')))
+    connection_string = "mongodb://{}:{}@mongo:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS'))
+    print(connection_string)
+    mongo_client = mongodb.init_client(connection_string)
     scraped_links = complete_crawler("http://www.dnes.bg/", 1)
 
-    sites = mongo_client.get_collection("scraping", "sites_collection")
-    sites.insert_many(scraped_links)
+    db = mongo_client["scraping"]
+    collection = db["sites_collection"]
+    collection.insert_many(scraped_links)
     print(scraped_links)
