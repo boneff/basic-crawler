@@ -25,12 +25,14 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      DB_USER: root
+      DB_PASS: password
     depends_on:
       - mongo
     networks:
       - app-tier
+    command:
+      tail -f /dev/null
 
 networks:
   app-tier:

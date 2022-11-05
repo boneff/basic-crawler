@@ -11,4 +11,4 @@ RUN pip install pipenv
 RUN pipenv install
 RUN mkdir logs
 
-CMD ["pipenv", "run", "python", "main.py"]
+#CMD ["pipenv", "run", "python", "main.py"]
