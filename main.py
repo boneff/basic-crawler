@@ -6,7 +6,7 @@ import logging
 import os
 import requests
 import time
-from tld import get_tld
+from tld import get_tld, exceptions
 import urllib.robotparser
 import mongodb
 
@@ -52,9 +52,12 @@ def parse_html(html_string, target_element, target_class = ''):
             # TODO - consider a custom formatter for BS4 instead of this simple strip
             # https://tedboy.github.io/bs4_doc/8_output.html
             element_text = element.get_text("&nbsp;", strip=True)
-            link_dict[element_text] = element['href']
+            link_dict[element_text] = get_normalized_url(element['href'])
         except KeyError:
             logging.error("Error getting 'href' from element {}".format(element))
+            continue
+        except exceptions.TldBadUrl:
+            logging.error("Error normalizing 'href' from element {}".format(element))
             continue
 
     return link_dict
@@ -83,7 +86,6 @@ def get_normalized_url(url):
         final_url = url
     return final_url
 
-# TODO - normalize urls to avoid duplication
 # TODO - count occurences of a given link - helpful in determining link importance
 def complete_crawler(seed_url, max_n = 1):
     delay_time = 1
@@ -107,7 +109,11 @@ def complete_crawler(seed_url, max_n = 1):
                 continue
             req_text = scrape_url(temp_url, delay)
             links_dictionary = parse_html(req_text, target_element, target_class)
-            link_dictionaries.append(links_dictionary)
+            site_dictionary = {
+                "site": temp_url,
+                "urls": links_dictionary
+            }
+            link_dictionaries.append(site_dictionary)
             # print(links_dictionary)
     return link_dictionaries
 
@@ -120,5 +126,6 @@ if __name__ == '__main__':
 
     db = mongo_client["scraping"]
     collection = db["sites_collection"]
-    collection.insert_many(scraped_links)
+    insert_result = collection.insert_many(scraped_links)
+    print(insert_result.inserted_ids)
     print(scraped_links)
