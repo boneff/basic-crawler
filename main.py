@@ -9,6 +9,7 @@ import time
 from tld import get_tld, exceptions
 import urllib.robotparser
 import mongodb
+import selenium_crawler
 
 def setup():
     load_dotenv()
@@ -122,10 +123,16 @@ if __name__ == '__main__':
     connection_string = "mongodb://{}:{}@mongo:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS'))
     print(connection_string)
     mongo_client = mongodb.init_client(connection_string)
-    scraped_links = complete_crawler("http://www.dnes.bg/", 1)
+    seed_url = os.getenv('SEED_URL')
+    use_selenium = os.getenv('USE_SELENIUM', False)
+    chromedriver_location = os.getenv('CHROMEDRIVER_LOCATION', False)
 
-    db = mongo_client["scraping"]
-    collection = db["sites_collection"]
-    insert_result = collection.insert_many(scraped_links)
-    print(insert_result.inserted_ids)
-    print(scraped_links)
+    if use_selenium:
+        scraped_links = complete_crawler(seed_url, 1)
+        db = mongo_client["scraping"]
+        collection = db["sites_collection"]
+        insert_result = collection.insert_many(scraped_links)
+        print(insert_result.inserted_ids)
+        print(scraped_links)
+    else:
+        selenium_crawler.extract_urls(seed_url, chromedriver_location)

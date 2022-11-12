@@ -10,6 +10,7 @@ lxml = "*"
 python-dotenv = "*"
 tld = "*"
 pymongo = "*"
+selenium = "*"
 
 [dev-packages]
 coverage = "*"

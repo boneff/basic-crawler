@@ -27,6 +27,9 @@ services:
     environment:
       DB_USER: root
       DB_PASS: password
+      USE_SELENIUM: true
+      CHROMEDRIVER_LOCATION: /usr/bin/chromedriver
+      SEED_URL: https://web.archive.org/web/20200406193325/https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters
     depends_on:
       - mongo
     networks:
