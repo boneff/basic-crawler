@@ -127,7 +127,7 @@ if __name__ == '__main__':
     use_selenium = os.getenv('USE_SELENIUM', False)
     chromedriver_location = os.getenv('CHROMEDRIVER_LOCATION', False)
 
-    if use_selenium:
+    if not use_selenium:
         scraped_links = complete_crawler(seed_url, 1)
         db = mongo_client["scraping"]
         collection = db["sites_collection"]
