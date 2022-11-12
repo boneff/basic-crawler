@@ -125,7 +125,7 @@ if __name__ == '__main__':
     mongo_client = mongodb.init_client(connection_string)
     seed_url = os.getenv('SEED_URL')
     use_selenium = os.getenv('USE_SELENIUM', False)
-    chromedriver_location = os.getenv('CHROMEDRIVER_LOCATION', False)
+    chromedriver_remote = os.getenv('CHROMEDRIVER_REMOTE', False)
 
     if not use_selenium:
         scraped_links = complete_crawler(seed_url, 1)
@@ -135,4 +135,4 @@ if __name__ == '__main__':
         print(insert_result.inserted_ids)
         print(scraped_links)
     else:
-        selenium_crawler.extract_urls(seed_url, chromedriver_location)
+        selenium_crawler.extract_urls(seed_url, chromedriver_remote)
