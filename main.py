@@ -127,12 +127,15 @@ if __name__ == '__main__':
     use_selenium = os.getenv('USE_SELENIUM', False)
     chromedriver_remote = os.getenv('CHROMEDRIVER_REMOTE', False)
 
-    if not use_selenium:
-        scraped_links = complete_crawler(seed_url, 1)
-        db = mongo_client["scraping"]
-        collection = db["sites_collection"]
-        insert_result = collection.insert_many(scraped_links)
-        print(insert_result.inserted_ids)
-        print(scraped_links)
-    else:
+    if use_selenium == "true":
+        logging.info("using Selenium")
         selenium_crawler.extract_urls(seed_url, chromedriver_remote)
+        exit(0)
+
+    logging.info("using Beautiful Soup")
+    scraped_links = complete_crawler(seed_url, 1)
+    db = mongo_client["scraping"]
+    collection = db["sites_collection"]
+    insert_result = collection.insert_many(scraped_links)
+    print(insert_result.inserted_ids)
+    print(scraped_links)

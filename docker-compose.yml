@@ -1,14 +1,5 @@
 version: '3'
 
-# Run as
-# docker-compose build; docker-compose up -d
-# Check with
-# docker ps
-# Then check the logs with
-# docker logs --tail 50 $service_name
-# docker-compose images
-# docker-compose logs --tail 20 service_name
-
 services:
 
   chrome:
@@ -32,15 +23,17 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      DB_USER: root
-      DB_PASS: password
-      USE_SELENIUM: true
+      ENVIRONMENT: "local"
+      DB_USER: "root"
+      DB_PASS: "password"
+      USE_SELENIUM: "true"
       CHROMEDRIVER_REMOTE: "http://chrome:4444/wd/hub"
-      SEED_URL: https://web.archive.org/web/20200406193325/https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters
+      SEED_URL: "https://web.archive.org/web/20200406193325/https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters"
     depends_on:
       - mongo
     networks:
       - app-tier
+    # keep the container up and running, so we can exec into it
     command:
       tail -f /dev/null
     volumes:
