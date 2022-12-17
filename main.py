@@ -41,8 +41,13 @@ def parse_html(html_string, target_element, target_class = ''):
     soup = BeautifulSoup(html_string, 'html.parser')
     if target_class != '':
         target_attributes = {'class': target_class}
+    logging.info("Looking into target element '{}' with target attributes '{}'".format(target_element, json.dumps(target_attributes)))
 
-    link_div = soup.find(target_element, target_attributes)
+    if target_attributes is None:
+        link_div = soup.find(target_element)
+    else:
+        link_div = soup.find(target_element, target_attributes)
+
     if link_div is None:
         logging.error("Target element '{}' with target attributes '{}' not found".format(target_element, json.dumps(target_attributes)))
         return link_dict
@@ -58,6 +63,9 @@ def parse_html(html_string, target_element, target_class = ''):
             logging.error("Error getting 'href' from element {}".format(element))
             continue
         except exceptions.TldBadUrl:
+            logging.error("Error normalizing 'href' from element {}".format(element))
+            continue
+        except exceptions.TldDomainNotFound:
             logging.error("Error normalizing 'href' from element {}".format(element))
             continue
 
@@ -110,6 +118,7 @@ def complete_crawler(seed_url, max_n = 1):
                 continue
             req_text = scrape_url(temp_url, delay)
             links_dictionary = parse_html(req_text, target_element, target_class)
+            print(links_dictionary)
             site_dictionary = {
                 "site": temp_url,
                 "urls": links_dictionary
@@ -120,22 +129,26 @@ def complete_crawler(seed_url, max_n = 1):
 
 if __name__ == '__main__':
     setup()
-    connection_string = "mongodb://{}:{}@mongo:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS'))
-    print(connection_string)
-    mongo_client = mongodb.init_client(connection_string)
-    seed_url = os.getenv('SEED_URL')
+    seed_url = os.getenv('SEED_URL', 'https://www.dnes.bg/')
     use_selenium = os.getenv('USE_SELENIUM', False)
-    chromedriver_remote = os.getenv('CHROMEDRIVER_REMOTE', False)
+    use_mongo = os.getenv('USE_MONGO', False)
 
     if use_selenium == "true":
         logging.info("using Selenium")
+        chromedriver_remote = os.getenv('CHROMEDRIVER_REMOTE', False)
         selenium_crawler.extract_urls(seed_url, chromedriver_remote)
         exit(0)
 
-    logging.info("using Beautiful Soup")
+    logging.info("using Beautiful Soup to scrape".format(seed_url))
     scraped_links = complete_crawler(seed_url, 1)
-    db = mongo_client["scraping"]
-    collection = db["sites_collection"]
-    insert_result = collection.insert_many(scraped_links)
-    print(insert_result.inserted_ids)
-    print(scraped_links)
+
+    if use_mongo == "true":
+        connection_string = "mongodb://{}:{}@mongo:27017/".format(os.getenv('DB_USER'), os.getenv('DB_PASS'))
+        print(connection_string)
+        mongo_client = mongodb.init_client(connection_string)
+        db = mongo_client["scraping"]
+        collection = db["sites_collection"]
+        insert_result = collection.insert_many(scraped_links)
+        print(insert_result.inserted_ids)
+
+    #print(scraped_links)

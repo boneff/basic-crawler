@@ -17,7 +17,7 @@ Once up you should just see logs from the different containers that just started
 In another termminal execute into the running container:
 
 ```bash
-docker exec -it basic-crawler_python_app_1 bash
+docker exec -it  basic-crawler-python_app-1 bash
 ```
 
 Once in the container you can run the crawler:

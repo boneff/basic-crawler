@@ -1,20 +1,20 @@
 <div class="div-col columns column-width" style="-moz-column-width: 22em; -webkit-column-width: 22em; column-width: 22em;">
-<ul><li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Archive.is" class="mw-redirect" title="Archive.is">Archive.is</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Comparison_of_feed_aggregators" title="Comparison of feed aggregators">Comparison of feed aggregators</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Data_scraping" title="Data scraping">Data scraping</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Data_wrangling" title="Data wrangling">Data wrangling</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Importer_(computing)" title="Importer (computing)">Importer</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Job_wrapping" title="Job wrapping">Job wrapping</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Knowledge_extraction" title="Knowledge extraction">Knowledge extraction</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/OpenSocial" title="OpenSocial">OpenSocial</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Scraper_site" title="Scraper site">Scraper site</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Fake_news_website" title="Fake news website">Fake news website</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Blog_scraping" title="Blog scraping">Blog scraping</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Spamdexing" title="Spamdexing">Spamdexing</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Domain_name_drop_list" title="Domain name drop list">Domain name drop list</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Text_corpus" title="Text corpus">Text corpus</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Web_archiving" title="Web archiving">Web archiving</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Blog_network" class="mw-redirect" title="Blog network">Blog network</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Search_Engine_Scraping" class="mw-redirect" title="Search Engine Scraping">Search Engine Scraping</a></li>
-<li><a href="/web/20200207180731/https://en.wikipedia.org/wiki/Category:Web_crawlers" title="Category:Web crawlers">Web crawlers</a></li></ul>
+<ul><li><a href="https://en.wikipedia.org/wiki/Archive.is" class="mw-redirect" title="Archive.is">Archive.is</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Comparison_of_feed_aggregators" title="Comparison of feed aggregators">Comparison of feed aggregators</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Data_scraping" title="Data scraping">Data scraping</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Data_wrangling" title="Data wrangling">Data wrangling</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Importer_(computing)" title="Importer (computing)">Importer</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Job_wrapping" title="Job wrapping">Job wrapping</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Knowledge_extraction" title="Knowledge extraction">Knowledge extraction</a></li>
+<li><a href="https://en.wikipedia.org/wiki/OpenSocial" title="OpenSocial">OpenSocial</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Scraper_site" title="Scraper site">Scraper site</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Fake_news_website" title="Fake news website">Fake news website</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Blog_scraping" title="Blog scraping">Blog scraping</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Spamdexing" title="Spamdexing">Spamdexing</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Domain_name_drop_list" title="Domain name drop list">Domain name drop list</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Text_corpus" title="Text corpus">Text corpus</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Web_archiving" title="Web archiving">Web archiving</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Blog_network" class="mw-redirect" title="Blog network">Blog network</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Search_Engine_Scraping" class="mw-redirect" title="Search Engine Scraping">Search Engine Scraping</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Category:Web_crawlers" title="Category:Web crawlers">Web crawlers</a></li></ul>
 </div>
