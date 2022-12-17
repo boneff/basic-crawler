@@ -38,3 +38,9 @@ cp .env.example .env && source .env
 ```bash
 pipenv run python main.py
 ```
+
+# Build and publish a Docker image using GitHub Actions
+
+We are building and pushing our image to DockerHub.
+
+See detailed how to: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
